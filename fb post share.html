@@ -1,0 +1,123 @@
+<div class="share-box" style="background-color: #000; border-radius: 10px;">
+  <div class="logo">
+    <a href="https://imgbb.com/"><img src="https://ibb.co/2d1s1vB/IMG-1725973398976-removebg-preview.png " alt="IMG-1725973398976-removebg-preview" border="0" style="width: 80px; height: 80px;" /></a>
+  </div>
+  <h2 class="title" style="color: #FF0000;">Facebook Auto Share</h2>
+  <div class="cookie-box">
+    <label for="cookie" style="color: #FF0000;">Enter Cookie:</label>
+    <input type="text" id="cookie" name="cookie" />
+  </div>
+  <div class="link-box">
+    <label for="link" style="color: #FF0000;">Enter Facebook Post Link:</label>
+    <input type="text" id="link" name="link" />
+  </div>
+  <div class="limit-box">
+    <label for="amount" style="color: #FF0000;">Enter Share Limit:</label>
+    <input type="number" id="amount" name="amount" />
+  </div>
+  <button id="send-btn" style="color: #FF0000;">Send</button>
+  <div class="loader" style="display: none;">
+    <img src="loader.gif" alt="Loading..." />
+  </div>
+</div>
+
+<style>
+  /* Add some basic styling to make it look nice */
+  .share-box {
+    padding: 20px;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .logo {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .logo img {
+    width: 80px;
+    height: 80px;
+  }
+
+  .title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #FF0000;
+  }
+
+  .cookie-box, .link-box, .limit-box {
+    margin-bottom: 10px;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #FF0000;
+  }
+
+  input[type="text"], input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  #send-btn {
+    background-color: #4CAF50;
+    color: #FF0000;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  #send-btn:hover {
+    background-color: #3e8e41;
+  }
+
+  .loader {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .loader img {
+    width: 50px;
+    height: 50px;
+  }
+</style>
+<div class="vpn-warning" style="display: none;">
+  <h2>VPN Detected</h2>
+  <p>You are using a VPN. Please disable it to access our website.</p>
+</div>
+
+<script>
+  // VPN detection script
+  const vpnDetection = () => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', 'https://api.ipify.org/?format=json', true);
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        const ipAddress = JSON.parse(xhr.responseText).ip;
+        const vpnApiUrl = 'https://vpnapi.io/api/vpn?ip=' + ipAddress;
+        fetch(vpnApiUrl)
+          .then(response => response.json())
+          .then(data => {
+            if (data.vpn === true) {
+              // Show VPN warning message
+              document.querySelector('.vpn-warning').style.display = 'block';
+              // Redirect user to a blocked page or exit the website
+              window.location.href = 'blocked.html';
+            }
+          })
+          .catch(error => console.error(error));
+      }
+    };
+    xhr.send();
+  };
+
+  // Run VPN detection script on page load
+  vpnDetection();
+</script>
